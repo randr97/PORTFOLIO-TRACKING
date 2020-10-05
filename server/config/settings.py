@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import environ
 
+import dj_database_url
+from decouple import config
+
 env = environ.Env()
 environ.Env.read_env()
 
@@ -22,7 +25,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY', default='r@%v8+&+*ara2(y_b+!r1=&!damzf!s_rp^%_t#vdvkio)(_p$')
+SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = env('DEBUG', default=True)
 
@@ -83,15 +86,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DJANGO_DB_NAME', default='postgres'),
-        'HOST': env('DJANGO_DB_HOST', default='db'),
-        'USER': env('DJANGO_DB_USER', default='postgres'),
-        'PORT': env('DJANGO_DB_PORT', default='5432'),
-        'PASSWORD': env('DJANGO_DB_PASSWORD', default='postgres'),
-        'ATOMIC_REQUESTS': True,
-    },
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
 
 # TODO: Uncomment this piece of shit
@@ -157,5 +154,8 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ],
 }
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
