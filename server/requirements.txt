@@ -37,3 +37,6 @@ ipython
 
 # debug
 ipdb
+
+# heroku
+whitenoise
