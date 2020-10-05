@@ -15,9 +15,6 @@ import environ
 import dj_database_url
 from decouple import config
 
-env = environ.Env()
-environ.Env.read_env()
-
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -27,7 +24,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = env('DEBUG', default=True)
+DEBUG = config('DEBUG', default=True)
 
 ALLOWED_HOSTS = ['*']
 
