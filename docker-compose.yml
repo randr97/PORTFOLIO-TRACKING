@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13.0
+    volumes:
+      - psql-data:/var/lib/postgresql/data
+      - .:/application
+    environment:
+      # Override in prod
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+  web:
+    build: .
+    working_dir: /application/server
+    env_file:
+      - server/config/.env
+    command: "tail -f /dev/null"
+    # command: ["bash", "docker_entry.sh", "python3", "manage.py", "runserver", "0:8000"]
+    volumes:
+      - .:/application
+      - app-python-site-packages:/usr/local/lib/python3.7/site-packages
+      - app-usr-local-bin:/usr/local/bin
+      - ~/.ssh:/root/.ssh
+    ports:
+      - "9090:8000"
+    depends_on:
+      - db
+      - redis
+
+  redis:
+    image: redis:5.0.6
+    volumes:
+      - redis-data:/data
+
+volumes:
+  app-python-site-packages:
+    driver: local
+  psql-data:
+    driver: local
+  app-usr-local-bin:
+    driver: local
+  esdata1:
+    driver: local
+  redis-data:
+    driver: local

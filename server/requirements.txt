@@ -1,0 +1,39 @@
+# Django Web Framework
+Django
+
+# Django Dependencies
+pytz
+
+# Postgres Adapter
+psycopg2
+
+# Environment Variables
+django-environ
+
+# RESTful Web Services
+djangorestframework
+
+# Django REST Framework Dependencies
+markdown
+django-filter
+
+# uwsgi
+uWSGI
+
+# Django redis
+django-redis
+
+# Python Requests
+requests
+
+# Debugging
+django-admin-shell
+
+# Other django apps
+django_extensions
+
+# Ipython
+ipython
+
+# debug
+ipdb
