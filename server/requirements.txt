@@ -40,6 +40,6 @@ ipdb
 
 # heroku
 python-decouple
-whitenoise
+whitenoise==3.2
 dj-database-url
 gunicorn
