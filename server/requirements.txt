@@ -5,7 +5,7 @@ Django
 pytz
 
 # Postgres Adapter
-psycopg2
+psycopg2-binary
 
 # Environment Variables
 django-environ
@@ -39,6 +39,7 @@ ipython
 ipdb
 
 # heroku
-whitenoise
 python-decouple
+whitenoise
 dj-database-url
+gunicorn
