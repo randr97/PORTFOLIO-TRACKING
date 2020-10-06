@@ -8,7 +8,7 @@ from .common import *  # noqa
 
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = config('DEBUG', default=True)
+DEBUG = config('DEBUG', default=False)
 
 DATABASES = {
     'default': dj_database_url.config(
