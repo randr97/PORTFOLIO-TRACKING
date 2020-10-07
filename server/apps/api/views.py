@@ -15,13 +15,37 @@ from apps.api.serializers import TradeSerializer
 
 class TradeView(ViewSet):
     """
-    This view is according to the question asked in the problem statement
+    This view exposes a bunch of APIs with basic Auth
+    that can be used to run CRUD operations on Trades
+    and also enables the user to view aggregates such as
+    portfolio and returns
     """
 
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
+        """
+        Lists all trades
+        Return format
+        {
+            "ok": true,
+            "data": [
+                {
+                    "ticker": "TCS",
+                    "trades": [
+                        {
+                            "id": 7,
+                            "ticker": "TCS",
+                            "price": 50.0,
+                            "shares": 10,
+                            "trade_type": "BUY"
+                        }
+                    ]
+                }
+            ]
+        }
+        """
         queryset = Trade.objects.all()
         serializer_context = {
             'request': request,
@@ -55,6 +79,8 @@ class TradeView(ViewSet):
             "shares": 10,
             "trade_type": "BUY"
         }
+        NOTE: If the trade type is sell then the shares stored in the DB
+        is converted to negative(By API) and hence do not add directly to DB without validations
         """
         trade_serializer = TradeSerializer(data=request.data)
         if trade_serializer.is_valid():
@@ -110,10 +136,29 @@ class TradeView(ViewSet):
         return response
 
     def fetch_portfolio(self, request):
+        """
+        This api returns the portfolio
+        Return format
+        [
+            {
+                "ticker": "INFY",
+                "average_buy_price": 50.0,
+                "total_shares": 50
+            }
+        ]
+        """
         response = self.fetch_portfolio_data()
         return Response(response)
 
     def fetch_returns(self, request):
+        """
+        This api returns the portfolio
+        Return format
+        {
+            "portfolio_returns": 4000.0
+        }
+        NOTE: Assumption made is CURRENT_PRICE_OF_SECURITY = 100
+        """
         CURRENT_PRICE_OF_SECURITY = 100
         response = self.fetch_portfolio_data()
         result = 0
